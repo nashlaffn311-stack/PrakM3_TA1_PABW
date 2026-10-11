@@ -1,50 +1,40 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Laporan;
 use Illuminate\Http\Request;
 
 class LaporBanjirController extends Controller
 {
+    // Halaman daftar laporan (Mengambil seluruh data dari DB)
+    public function index()
+    {
+        $laporan = Laporan::all();
+        return view('lapor.index', compact('laporan'));
+    }
     // Halaman Form Pelaporan
     public function create()
     {
         return view('lapor.create');
     }
 
-    // Proses Kirim Form dan Halaman Konfirmasi
+    // Menyimpan data form ke DB
     public function store(Request $request)
     {
-        $data = [
-            'nama_pelapor' => $request->input('nama_pelapor', 'Anonim'),
-            'lokasi' => $request->input('lokasi', 'Tidak Diketahui'),
-            'tinggi_air' => $request->input('tinggi_air', 0),
-        ];
+        $request->validate([
+            'nama_pelapor' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
+            'tinggi_genangan' => 'required|numeric',
+            'tanggal_kejadian' => 'required|date',
+        ]);
 
-        return view('lapor.konfirmasi', compact('data'));
-    }
+        $laporan = Laporan::create([
+            'nama_pelapor' => $request->nama_pelapor,
+            'lokasi' => $request->lokasi,
+            'tinggi_genangan' => $request->tinggi_genangan,
+            'tanggal_kejadian' => $request->tanggal_kejadian,
+        ]);
 
-    // Halaman Daftar Laporan (Data Array Dummy)
-    public function index()
-    {
-        $laporanList = [
-            [
-                'nama_pelapor' => 'Budi Santoso',
-                'lokasi' => 'Dayeuhkolot',
-                'tinggi_air' => 25,
-            ],
-            [
-                'nama_pelapor' => 'Siti Aminah',
-                'lokasi' => 'Baleendah',
-                'tinggi_air' => 50,
-            ],
-            [
-                'nama_pelapor' => 'Ahmad Fauzi',
-                'lokasi' => 'Bojongsoang',
-                'tinggi_air' => 85,
-            ],
-        ];
-
-        return view('lapor.index', compact('laporanList'));
+        return view('lapor.konfirmasi', compact('laporan'));
     }
 }

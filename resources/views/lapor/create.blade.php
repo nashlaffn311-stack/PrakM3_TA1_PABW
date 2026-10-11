@@ -18,10 +18,14 @@
         </div>
 
         <div class="form-group">
-            <label for="tinggi_air">Tinggi Air (cm):</label>
-            <input type="number" id="tinggi_air" name="tinggi_air" required>
+            <label for="tinggi_genangan">Tinggi Genangan (cm):</label>
+            <input type="number" id="tinggi_genangan" name="tinggi_genangan" required>
+        </div>
+        <div class="form-group">
+            <label for="tanggal_kejadian">Tanggal Kejadian:</label><br>
+            <input type="date" id="tanggal_kejadian" name="tanggal_kejadian" class="form-control" required>
         </div>
 
-        <button type="submit" class="btn">Kirim Laporan</button>
+        <button type="submit" class="btn" style="margin-top: 15px;">Kirim Laporan</button>
     </form>
 @endsection
